@@ -1,0 +1,31 @@
+package regulier.groupe5.carepulse.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/doctor/logout")
+public class LogoutController {
+
+    /**
+     * Endpoint to logout a doctor; invalidates the current session
+     * @param request
+     * @param auth Current authentication object provided by Spring Security
+     * @return Success message
+     */
+    @PostMapping
+    public ResponseEntity<?> logout(Authentication auth, HttpServletRequest request) {
+        if (request.getSession(false) != null) {
+            request.getSession().invalidate();
+        }
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(Map.of("response", "Doctor logout successful"));
+    }
+}
